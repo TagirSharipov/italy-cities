@@ -1,24 +1,20 @@
 'use client';
 
 import { CustomerField, InvoiceForm } from '@/app/lib/definitions';
-import {
-  CheckIcon,
-  ClockIcon,
-  CurrencyDollarIcon,
-  UserCircleIcon,
-} from '@heroicons/react/24/outline';
+import { CheckIcon, ClockIcon, CurrencyDollarIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Button } from '@/app/ui/button';
+import { State, updateInvoice } from '@/app/lib/actions';
+import { useActionState } from 'react';
 
-export default function EditInvoiceForm({
-  invoice,
-  customers,
-}: {
-  invoice: InvoiceForm;
-  customers: CustomerField[];
-}) {
+export default function EditInvoiceForm({ invoice, customers }: { invoice: InvoiceForm; customers: CustomerField[] }) {
+  const initialState: State = { message: null, errors: {} };
+  x;
+  const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
+
+  const [state, formAction] = useActionState(updateInvoiceWithId, initialState);
   return (
-    <form>
+    <form action={formAction}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">
@@ -35,7 +31,7 @@ export default function EditInvoiceForm({
               <option value="" disabled>
                 Select a customer
               </option>
-              {customers.map((customer) => (
+              {customers.map(customer => (
                 <option key={customer.id} value={customer.id}>
                   {customer.name}
                 </option>
@@ -68,9 +64,7 @@ export default function EditInvoiceForm({
 
         {/* Invoice Status */}
         <fieldset>
-          <legend className="mb-2 block text-sm font-medium">
-            Set the invoice status
-          </legend>
+          <legend className="mb-2 block text-sm font-medium">Set the invoice status</legend>
           <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
             <div className="flex gap-4">
               <div className="flex items-center">
